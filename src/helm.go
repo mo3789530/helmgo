@@ -11,7 +11,7 @@ import (
 
 var helmClient *HelmClient
 
-var _ Client = &HelmClient{}
+// var _ Client = &HelmClient{}
 
 // HelmClient Client defines the values of a helm client.
 type HelmClient struct {

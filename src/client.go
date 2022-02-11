@@ -19,5 +19,5 @@ func Newk8sClient(clientset *kubernetes.Clientset) K8SClient {
 }
 
 func (c *k8sClient) GetNameSpaces() ([]string, error) {
-	c.Clientset.CoreV1().Namespaces()
+	return nil, nil
 }
