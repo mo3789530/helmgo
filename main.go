@@ -2,8 +2,10 @@ package main
 
 import (
 	"flag"
+	"gopls-workspace/handler"
 	"gopls-workspace/libs"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -69,6 +71,9 @@ func main() {
 		panic(err.Error())
 	}
 	k8sClient := libs.Newk8sClient(clientset)
+	helmgo := libs.NewHelmGo(config)
+
+	handler := handler.NewHelmHandler(k8sClient, helmgo)
 
 	// debug create new namespace
 	// err = k8sClient.CreateNameSpace("test1")
@@ -84,5 +89,15 @@ func main() {
 	for _, v := range ns {
 		println(v)
 	}
+
+	listenAddr := ":8080"
+	if val, ok := os.LookupEnv("FUNCTIONS_CUSTOMHANDLER_PORT"); ok {
+		listenAddr = ":" + val
+	}
+
+	http.HandleFunc("/api/helm/keycloak", handler.InstallHandler)
+
+	log.Printf("About to listen on %s. Go to https://127.0.0.1%s/", listenAddr, listenAddr)
+	log.Fatal(http.ListenAndServe(listenAddr, nil))
 
 }
