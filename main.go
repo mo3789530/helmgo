@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"gopls-workspace/libs"
 	"log"
 	"os"
 	"path/filepath"
@@ -53,7 +54,7 @@ func main() {
 	}
 
 	var config *rest.Config
-	if isIncluster == true {
+	if isIncluster {
 		config, err = inCluster()
 	} else {
 		config, err = outCluster()
@@ -67,9 +68,21 @@ func main() {
 		log.Println(err)
 		panic(err.Error())
 	}
+	k8sClient := libs.Newk8sClient(clientset)
 
-	k8sClient := src.Newk8sClient(clientset)
+	// debug create new namespace
+	// err = k8sClient.CreateNameSpace("test1")
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// }
 
-	k8sClient.GetNameSpaces()
+	// debug list namespace
+	ns, err := k8sClient.GetNameSpaces()
+	if err != nil {
+		log.Println(err.Error())
+	}
+	for _, v := range ns {
+		println(v)
+	}
 
 }
