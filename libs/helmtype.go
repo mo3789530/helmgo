@@ -1,4 +1,4 @@
-package src
+package libs
 
 import (
 	"time"
@@ -11,7 +11,13 @@ import (
 
 var helmClient *HelmClient
 
-// var _ Client = &HelmClient{}
+var Client = &HelmClient{}
+
+type KubeConfigClientOptions struct {
+	*Options
+	KubeContext string
+	KubeConfig  []byte
+}
 
 // HelmClient Client defines the values of a helm client.
 type HelmClient struct {
@@ -23,6 +29,15 @@ type HelmClient struct {
 	ActionConfig *action.Configuration
 	linting      bool
 	DebugLog     action.DebugLog
+}
+
+type Options struct {
+	Namespace        string
+	RepositoryConfig string
+	RepositoryCache  string
+	Debug            bool
+	Linting          bool
+	DebugLog         action.DebugLog
 }
 
 // ChartSpec defines the values of a helm chart

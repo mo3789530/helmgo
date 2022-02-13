@@ -1,4 +1,4 @@
-package src
+package libs
 
 import (
 	"context"

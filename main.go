@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"gopls-workspace/src"
 	"log"
 	"os"
 	"path/filepath"
