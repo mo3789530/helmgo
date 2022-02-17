@@ -2,7 +2,10 @@ module gopls-workspace
 
 go 1.17
 
-require k8s.io/client-go v0.23.3
+require (
+	gopkg.in/yaml.v2 v2.4.0
+	k8s.io/client-go v0.23.3
+)
 
 require (
 	cloud.google.com/go v0.99.0 // indirect
@@ -13,7 +16,6 @@ require (
 	github.com/Azure/go-autorest/logger v0.2.1 // indirect
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.0.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
 require (
@@ -91,7 +93,7 @@ require (
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spf13/cast v1.4.1 // indirect
 	github.com/spf13/cobra v1.3.0 // indirect
-	github.com/spf13/pflag v1.0.5
+	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect

@@ -96,6 +96,7 @@ func main() {
 	}
 
 	http.HandleFunc("/api/helm/keycloak", handler.InstallHandler)
+	http.HandleFunc("/api/health", handler.HealthHandler)
 
 	log.Printf("About to listen on %s. Go to https://127.0.0.1%s/", listenAddr, listenAddr)
 	log.Fatal(http.ListenAndServe(listenAddr, nil))
