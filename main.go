@@ -2,8 +2,8 @@ package main
 
 import (
 	"flag"
-	"gopls-workspace/handler"
-	"gopls-workspace/libs"
+	"helmgo/handler"
+	"helmgo/libs"
 	"log"
 	"net/http"
 	"os"
