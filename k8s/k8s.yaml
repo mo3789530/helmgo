@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak-helmgo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: keycloak-helmgo
+  template:
+    metadata:
+      labels:
+        name: keycloak-helmgo
+    spec:
+      containers:
+      - name: keycloak-helmgo
+        image: mo053/helmgo:0.0.1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        env:
+        - name: 
+          value: "-XX:ErrorFile=/dump/error.log -Xmx50m -XX:+CrashOnOutOfMemoryError -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/dump/oom.bin"
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-helmgo-svc
+spec:
+  type: ClusterIP
+  ports:
+   - name: "http-port"
+     protocol: "TCP"
+     port: 8080
+     targetPort: 8080
+  selector:
+    name: keycloak-helmgo
