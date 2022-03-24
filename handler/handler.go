@@ -43,8 +43,8 @@ func (c *helmHandler) InstallHandler(w http.ResponseWriter, r *http.Request) {
 		errorHandler(w, r, err)
 		return
 	}
-	libs.UpdateEnvValue("domain", domain)
-	libs.UpdateEnvValue("namespace", ns)
+	libs.UpdateEnvValue("SUB_DOMAIN", domain)
+	libs.UpdateEnvValue("NAMESPACE", ns)
 	err = c.HelmGo.Install(ns)
 	if err != nil {
 		log.Println(err.Error())
