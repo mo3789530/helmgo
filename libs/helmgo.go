@@ -17,7 +17,7 @@ const (
 )
 
 type HelmGo interface {
-	Install(ns string) error
+	Install(ns string, url string, vals map[string]interface{}) error
 }
 
 type helmgo struct {
@@ -30,7 +30,7 @@ func NewHelmGo(config *rest.Config) HelmGo {
 	}
 }
 
-func (c *helmgo) Install(ns string) error {
+func (c *helmgo) Install(ns string, url string, vals map[string]interface{}) error {
 
 	chart, err := loader.Load(chartPath)
 	if err != nil {
@@ -58,7 +58,7 @@ func (c *helmgo) Install(ns string) error {
 	iCli := action.NewInstall(actionConfig)
 	iCli.Namespace = releaseNamespace
 	iCli.ReleaseName = releaseName
-	rel, err := iCli.Run(chart, nil)
+	rel, err := iCli.Run(chart, vals)
 	if err != nil {
 		return err
 	}

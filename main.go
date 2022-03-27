@@ -45,6 +45,7 @@ func outCluster() (*rest.Config, error) {
 
 func main() {
 
+	log.SetFlags(log.Lshortfile)
 	err := godotenv.Load(".env.local")
 	if err != nil {
 		log.Println("Not found env local")
@@ -82,13 +83,13 @@ func main() {
 	// }
 
 	// debug list namespace
-	ns, err := k8sClient.GetNameSpaces()
-	if err != nil {
-		log.Println(err.Error())
-	}
-	for _, v := range ns {
-		println(v)
-	}
+	// ns, err := k8sClient.GetNameSpaces()
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// }
+	// for _, v := range ns {
+	// 	println(v)
+	// }
 
 	listenAddr := ":8080"
 	if val, ok := os.LookupEnv("FUNCTIONS_CUSTOMHANDLER_PORT"); ok {
