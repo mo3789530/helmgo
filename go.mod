@@ -6,8 +6,8 @@ require (
 	github.com/joho/godotenv v1.4.0
 	gopkg.in/yaml.v2 v2.4.0
 	helm.sh/helm/v3 v3.8.0
-	k8s.io/api v0.23.4
-	k8s.io/apimachinery v0.23.4
+	k8s.io/api v0.23.5
+	k8s.io/apimachinery v0.23.5
 	k8s.io/cli-runtime v0.23.4
 	k8s.io/client-go v0.23.4
 )

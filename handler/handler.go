@@ -6,6 +6,7 @@ import (
 	"helmgo/libs"
 	"log"
 	"net/http"
+	"os"
 )
 
 type HelmHandler interface {
@@ -25,34 +26,36 @@ func NewHelmHandler(k8s libs.K8SClient, helm libs.HelmGo) HelmHandler {
 	}
 }
 
+type KeycloakRequest struct {
+	KeycloakDomain string `json:"keycloakDoamin"`
+	Namespace      string `json:"namespace"`
+}
+
 type KeycloakResponse struct {
 	Status         int
-	keycloakDomain string
-	namespace      string
+	KeycloakDomain string
+	Namespace      string
 }
 
 // post requrst
 // body { 'namespace': string, 'keycloakDomain' : string }
+// curl  -X POST http://localhost:8080/api/helm/keycloak  -d '{ "namespace": "test", "keycloakDoamin" : "auth1" }'  -H "Content-Type: application/json"
 func (c *helmHandler) InstallHandler(w http.ResponseWriter, r *http.Request) {
-	ns := r.FormValue("namespace")
-	domain := r.FormValue("keycloakDomain")
 
-	err := c.K8SClient.CreateNameSpace(ns)
-	if err != nil {
-		log.Println(err.Error())
+	var request KeycloakRequest
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
 		errorHandler(w, r, err)
 		return
 	}
-	libs.UpdateEnvValue("SUB_DOMAIN", domain)
-	libs.UpdateEnvValue("NAMESPACE", ns)
-	err = c.HelmGo.Install(ns)
+	url := request.KeycloakDomain + "." + os.Getenv("DOMAIN")
+	err := c.HelmGo.Install(request.Namespace, url, nil)
 	if err != nil {
 		log.Println(err.Error())
 		errorHandler(w, r, err)
 		return
 	}
 
-	keycloak := KeycloakResponse{http.StatusOK, domain, ns}
+	keycloak := KeycloakResponse{http.StatusOK, request.KeycloakDomain, request.Namespace}
 	res, err := json.Marshal(keycloak)
 	if err != nil {
 		log.Println(err.Error())
