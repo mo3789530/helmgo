@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak-helmgo
+  labels:
+    app: keycloak-helmgo
 spec:
   replicas: 1
   selector:
@@ -13,14 +15,18 @@ spec:
         name: keycloak-helmgo
     spec:
       containers:
-      - name: keycloak-helmgo
-        image: mo053/helmgo:0.0.1
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
-        ports:
-        - containerPort: 8080
+        - name: keycloak-helmgo
+          image: mo053/helmgo:0.0.9-local
+          env:
+            - name: IN_CLUSTER
+              value: "true"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 500Mi
+          ports:
+            - containerPort: 8080
+      serviceAccount: keycloak-cluster-sa
 ---
 apiVersion: v1
 kind: Service
@@ -34,4 +40,5 @@ spec:
      port: 80
      targetPort: 8080
   selector:
-    name: keycloak-helmgo
+    name: "keycloak-helmgo"
+  type: "ClusterIP"
